@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/autoplay';
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 0.5rem;
+
+  /* Sidebar widths */
+  --sidebar-width-expanded: 240px;
+  --sidebar-width-collapsed: 70px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Swiper Custom Styles */
+.institute-swiper {
+  padding: 1rem 0;
+  overflow: visible !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 40px !important;
+  height: 40px !important;
+  background: white !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  display: none;
+}
+
+.swiper-button-prev {
+  left: 0 !important;
+}
+
+.swiper-button-next {
+  right: 0 !important;
+}
+
+.swiper-button-disabled {
+  opacity: 0 !important;
+  cursor: not-allowed !important;
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+/* Sidebar layout adjustments */
+/* These rules only apply if a parent has the "has-sidebar" class */
+.has-sidebar.sidebar-expanded main,
+.has-sidebar.sidebar-expanded .main-content {
+  margin-left: var(--sidebar-width-expanded);
+  width: calc(100% - var(--sidebar-width-expanded));
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.has-sidebar.sidebar-collapsed main,
+.has-sidebar.sidebar-collapsed .main-content {
+  margin-left: var(--sidebar-width-collapsed);
+  width: calc(100% - var(--sidebar-width-collapsed));
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* If the layout is wrapped with .has-sidebar but no expanded/collapsed class yet, default to expanded */
+.has-sidebar main,
+.has-sidebar .main-content {
+  margin-left: var(--sidebar-width-expanded);
+  width: calc(100% - var(--sidebar-width-expanded));
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* If referencing #main-content directly */
+#main-content {
+  transition: margin-left 0.3s ease;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}

@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+dist/
+build/
+client/dist/
+server/dist/
+.next/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+client/.env
+client/.env.*
+!client/.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Runtime / temp
+tmp/
+temp/
+.cache/
+.vite/
+coverage/
+*.pid
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local tool artifacts
+.codex/
