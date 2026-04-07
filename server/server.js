@@ -43,6 +43,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://15.206.215.46:5173',
   'http://15.206.215.46',
+  'https://campus-connect-53ua.vercel.app',
+  'https://campusconnect-2-c1s6.onrender.com',
   'http://alumconnect.home.kg',
   process.env.VITE_API_BASE_URL,
   process.env.VITE_backend_URL
