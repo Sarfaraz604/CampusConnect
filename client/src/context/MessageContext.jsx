@@ -141,29 +141,6 @@ const fetchConversations = async () => {
       setLoading(prev => ({ ...prev, messages: false }));
     }
   };
-  useEffect(() => {
-    if (user) {
-      // Connect socket
-      const socket = socketService.connect(user);
-  
-      // Listen for new messages
-      const handleNewMessage = (message) => {
-        // Immediately update conversations and unread count
-        fetchConversations();
-        fetchUnreadCount();
-      };
-  
-      socketService.onNewMessage(handleNewMessage);
-  
-      // Cleanup
-      return () => {
-        const currentSocket = socketService.getSocket();
-        if (currentSocket) {
-          currentSocket.off('newMessage', handleNewMessage);
-        }
-      };
-    }
-  }, [user]);
   // Send a message
   const sendMessage = async (recipientId, content) => {
     try {
