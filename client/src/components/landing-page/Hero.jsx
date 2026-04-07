@@ -25,7 +25,7 @@ const Hero = () => {
             />
           )}
           <h1 className="text-5xl font-bold text-gray-900 tracking-tight">
-            Welcome to <span className="text-blue-600 block mt-2">AlumConnect</span>
+            Welcome to <span className="text-blue-600 block mt-2">CampusConnect</span>
           </h1>
           <p className="text-gray-600 mt-6 text-lg max-w-2xl mx-auto leading-relaxed">
             The networking experience for IIIT Agartala to help students, alumni, and institute leadership stay

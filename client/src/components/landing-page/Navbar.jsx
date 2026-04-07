@@ -151,7 +151,7 @@ const Navbar = () => {
               className="object-contain"
             />
             <div className="ml-3 hidden leading-tight lg:block">
-              <h1 className="text-xl font-bold text-blue-700">AlumConnect</h1>
+              <h1 className="text-xl font-bold text-blue-700">CampusConnect</h1>
               <p className="text-xs text-gray-500">IIIT Agartala</p>
             </div>
           </Link>
