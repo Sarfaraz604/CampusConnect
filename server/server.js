@@ -49,17 +49,28 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
+// <<<<<<< main
+  // origin: (origin, callback) => {
+  //   if (!origin || allowedOrigins.includes(origin)) {
+  //     callback(null, origin);  // Allow the request
+  //   } else {
+  //     callback(new Error('Not allowed by CORS'));
+  //   }
+  // },
+  // credentials: true,  // Required when using cookies, authentication headers, etc.
+// =======
   origin: [
-    'http://localhost:5173',
+    'https://campus-connect-azure-ten.vercel.app/',
     'http://localhost:3000',
     'http://15.206.215.46:5173',
     'http://15.206.215.46',
     'http://15.206.215.46:3000',
-    
-    process.env.VITE_API_BASE_URL,
-    process.env.VITE_backend_URL
-  ].filter(Boolean),
+    'http://alumconnect.home.kg',
+    process.env.FRONTEND_URL,
+    process.env.VITE_API_BASE_URL
+    ].filter(Boolean),
   credentials: true,
+// >>>>>>> main
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type', 
@@ -124,7 +135,8 @@ const routes = [
   { path: '/api/alumni', router: require('./routes/alumniRoutes') },
   { path: '/api/forum', router: require('./routes/forumRoutes') },
   { path: '/api/donations/admin', router: require('./routes/adminDonationRoutes') },
-  { path: '/api/users', router: require('./routes/userRoutes') }
+  { path: '/api/users', router: require('./routes/userRoutes') },
+  { path: '/api/messages', router: require('./routes/messageRoutes') }
 ];
 
 // Apply routes
@@ -132,28 +144,14 @@ routes.forEach(route => {
   app.use(route.path, route.router);
 });
 
-// Create HTTP server (before error handlers)
-const server = http.createServer(app);
-
-// Initialize Socket.IO
-const initializeSocketIO = require('./config/socketConfig');
-const io = initializeSocketIO(server, sessionConfig);
-
-// Attach io to app locals for route access
-app.locals.io = io;
-
-// NOW add messageRoutes after io is initialized (BEFORE error handlers!)
-const messageRoutes = require('./routes/messageRoutes');
-app.use('/api/messages', messageRoutes);
-
-// 404 handler (must be AFTER all routes)
+// 404 handler
 app.use((req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
   error.status = 404;
   next(error);
 });
 
-// Global Error Handler (must be last)
+// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Global Error Handler:', {
     message: err.message,
@@ -167,6 +165,13 @@ app.use((err, req, res, next) => {
       : 'An unexpected error occurred'
   });
 });
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.IO
+const initializeSocketIO = require('./config/socketConfig');
+const io = initializeSocketIO(server, sessionConfig);
 
 // Start server
 const PORT = process.env.PORT || 3000;
@@ -197,4 +202,4 @@ process.on('unhandledRejection', (reason, promise) => {
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
-module.exports = { app, server };
+module.exports = { app, server, io };
