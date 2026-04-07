@@ -44,5 +44,4 @@ Thumbs.db
 *.swp
 *.swo
 
-# Local tool artifacts
-.codex/
+#
