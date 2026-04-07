@@ -69,6 +69,7 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Session configuration
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true' || (process.env.FRONTEND_URL && !process.env.FRONTEND_URL.includes('localhost'));
 const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -81,10 +82,10 @@ const sessionConfig = {
     autoRemoveInterval: 10
   }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: !!isProduction,
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    sameSite: isProduction ? 'none' : 'lax'
   }
 };
 
