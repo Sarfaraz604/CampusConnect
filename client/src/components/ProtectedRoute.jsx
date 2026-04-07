@@ -1,19 +1,15 @@
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const location = useLocation();
+  const { user, loading } = useUser();
 
-  useEffect(() => {
-    // axios.get('${import.meta.env.VITE_backend_URL}/auth/profile', { withCredentials: true })
-    axios.get(`${import.meta.env.VITE_backend_URL}/auth/profile`, { withCredentials: true })
-      .then(() => setIsAuthenticated(true))
-      .catch(() => setIsAuthenticated(false));
-  }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  if (isAuthenticated === null) return <div>Loading...</div>;
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" replace state={{ from: location }} />;
 };
 
 export default ProtectedRoute;

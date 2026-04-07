@@ -117,31 +117,7 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Conditional authentication check
-    const checkAuthentication = async () => {
-      // Check if there's a cached profile
-      const cachedProfile = localStorage.getItem('cachedUserProfile');
-      
-      if (cachedProfile) {
-        try {
-          // Validate cached profile
-          const parsedProfile = JSON.parse(cachedProfile);
-          
-          // Optional: You can add additional validation here
-          if (parsedProfile && parsedProfile.id) {
-            setUser(parsedProfile);
-          }
-        } catch (parseError) {
-          console.error('Failed to parse cached profile', parseError);
-          localStorage.removeItem('cachedUserProfile');
-        }
-      }
-
-      // Always attempt to verify authentication
-      await fetchUser();
-    };
-
-    checkAuthentication();
+    fetchUser();
   }, []);
 
   const value = {
