@@ -9,6 +9,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const http = require('http');
+const {
+  corsOriginHandler,
+  getAllowedOrigins,
+  getFrontendOrigin,
+} = require('./config/originConfig');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -20,10 +25,13 @@ const requiredEnvVars = [
   'GOOGLE_CLIENT_ID',
   'GOOGLE_CLIENT_SECRET',
   'GOOGLE_CALLBACK_URL',
-  'VITE_API_BASE_URL'
 ];
 
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (!getFrontendOrigin()) {
+  missingEnvVars.push('FRONTEND_URL or VITE_API_BASE_URL');
+}
+
 if (missingEnvVars.length > 0) {
   console.error('Missing required environment variables:', missingEnvVars);
   process.exit(1);
@@ -33,50 +41,15 @@ if (missingEnvVars.length > 0) {
 connectDB();
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Security Middleware
 app.use(helmet());
 app.use(compression());
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://15.206.215.46:5173',
-  'http://15.206.215.46',
-  'https://campus-connect-53ua.vercel.app',
-  'https://campus-connect-53ua.vercel.app/',
-  'https://campusconnect-2-c1s6.onrender.com',
-  'http://alumconnect.home.kg',
-  process.env.VITE_API_BASE_URL,
-  process.env.VITE_backend_URL
-];
-
 const corsOptions = {
-// <<<<<<< main
-  // origin: (origin, callback) => {
-  //   if (!origin || allowedOrigins.includes(origin)) {
-  //     callback(null, origin);  // Allow the request
-  //   } else {
-  //     callback(new Error('Not allowed by CORS'));
-  //   }
-  // },
-  // credentials: true,  // Required when using cookies, authentication headers, etc.
-// =======
-  origin: [
-    'https://campus-connect-azure-ten.vercel.app/',
-    'http://localhost:3000',
-    'http://15.206.215.46:5173',
-    'http://15.206.215.46',
-    'https://campus-connect-53ua.vercel.app',
-  'https://campus-connect-53ua.vercel.app/',
-  'https://campusconnect-2-c1s6.onrender.com',
-    'http://15.206.215.46:3000',
-    'http://alumconnect.home.kg',
-    process.env.FRONTEND_URL,
-    process.env.VITE_API_BASE_URL
-    ].filter(Boolean),
+  origin: corsOriginHandler,
   credentials: true,
-// >>>>>>> main
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type', 
@@ -89,6 +62,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Body parser middleware
 app.use(express.json({ limit: '10kb' }));
@@ -99,6 +73,7 @@ const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
     collectionName: 'sessions',
@@ -178,12 +153,15 @@ const server = http.createServer(app);
 // Initialize Socket.IO
 const initializeSocketIO = require('./config/socketConfig');
 const io = initializeSocketIO(server, sessionConfig);
+app.locals.io = io;
 
 // Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`Frontend origin: ${getFrontendOrigin()}`);
+  console.log(`Allowed origins: ${getAllowedOrigins().join(', ')}`);
   // console.log(`Server URL: http://localhost:${PORT}`);
 });
 

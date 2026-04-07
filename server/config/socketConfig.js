@@ -2,16 +2,11 @@ const socketIo = require('socket.io');
 const session = require('express-session');
 const passport = require('passport');
 const User = require('../models/users');
+const { corsOriginHandler } = require('./originConfig');
 
 module.exports = (server, sessionConfig) => {
-  // CORS configuration
   const corsOptions = {
-    origin: [
-      'http://localhost:5173',  // Vite dev server
-      'http://localhost:3000',  // Backend server
-      process.env.VITE_API_BASE_URL,  // Production frontend URL
-      process.env.VITE_backend_URL,  // Production backend URL
-    ].filter(Boolean),
+    origin: corsOriginHandler,
     credentials: true,
     methods: ['GET', 'POST'],
   };
@@ -70,4 +65,3 @@ module.exports = (server, sessionConfig) => {
 
   return io;
 };
-

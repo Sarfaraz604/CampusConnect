@@ -3,6 +3,7 @@ const passport = require("passport");
 const User = require("../models/users");
 const { ensureInstitutionalEmail } = require("../middleware/roleMiddleware");
 const { isAuthenticated } = require("../middleware/isAuthenticated");
+const { getFrontendOrigin } = require("../config/originConfig");
 const {
   buildSignupUserPayload,
   normalizeText,
@@ -19,6 +20,7 @@ const getPublicUser = (user) => ({
 });
 
 const buildFrontendLoginUrl = ({ mode, provider, error }) => {
+  const frontendOrigin = getFrontendOrigin();
   const params = new URLSearchParams();
 
   if (mode === "signup") {
@@ -34,7 +36,7 @@ const buildFrontendLoginUrl = ({ mode, provider, error }) => {
   }
 
   const query = params.toString();
-  return `${process.env.VITE_API_BASE_URL}/login${query ? `?${query}` : ""}`;
+  return `${frontendOrigin}/login${query ? `?${query}` : ""}`;
 };
 
 const persistSession = (req) =>
@@ -376,7 +378,7 @@ router.get("/google/callback", (req, res, next) => {
           ? "/admin/announcements"
           : "/announcements";
 
-      res.redirect(`${process.env.VITE_API_BASE_URL}${redirectPath}`);
+      res.redirect(`${getFrontendOrigin()}${redirectPath}`);
     } catch (callbackError) {
       next(callbackError);
     }
