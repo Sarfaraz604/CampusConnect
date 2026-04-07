@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider, useUser } from './context/UserContext';
 
 // Import your custom ToastProvider
@@ -67,7 +67,16 @@ const LandingPage = () => {
 
 // AppRoutes component with role-based routing
 const AppRoutes = () => {
-  const { user } = useUser();
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   const role = user?.role?.toLowerCase() || 'student';
 
   return (
@@ -253,6 +262,9 @@ const AppRoutes = () => {
           />
         </>
       )}
+
+      {/* Catch-all route to handle 404s and redirects appropriately */}
+      <Route path="*" element={<Navigate to={user ? (role === 'admin' ? '/admin/announcements' : '/announcements') : '/login'} replace />} />
     </Routes>
   );
 };
