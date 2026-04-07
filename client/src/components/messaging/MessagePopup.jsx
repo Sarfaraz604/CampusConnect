@@ -30,6 +30,8 @@ const MessagePopup = ({ open, onClose }) => {
     fetchConversationMessages,
     loading,
     deleteConversation,
+    chatTargetUser,
+    setChatTargetUser,
   } = useMessage();
   
   const { user: currentUser } = useUser();
@@ -47,6 +49,22 @@ const MessagePopup = ({ open, onClose }) => {
    useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Handle externally triggered chat requests
+  useEffect(() => {
+    if (chatTargetUser && open) {
+      const existingConv = conversations.find(c => c.otherUser?._id === chatTargetUser._id);
+      
+      if (existingConv) {
+        openConversation(existingConv);
+      } else {
+        setOpenConversationId(null);
+        setSearchQuery(chatTargetUser.email || chatTargetUser.name);
+      }
+      setChatTargetUser(null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatTargetUser, open, conversations]);
 
   // Infinite scroll handler
   const handleScroll = async () => {

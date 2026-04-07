@@ -14,6 +14,8 @@ export const MessageProvider = ({ children }) => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [unreadByConversation, setUnreadByConversation] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
+  const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
+  const [chatTargetUser, setChatTargetUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState({
     conversations: false,
@@ -238,6 +240,10 @@ export const MessageProvider = ({ children }) => {
         sendMessage,
         markMessagesAsRead,
         deleteConversation,
+        isMessagePopupOpen,
+        setIsMessagePopupOpen,
+        chatTargetUser,
+        setChatTargetUser,
       }}
     >
       {children}

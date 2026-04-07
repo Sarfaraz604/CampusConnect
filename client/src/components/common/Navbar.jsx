@@ -12,16 +12,14 @@ import MessagePopup from '../messaging/MessagePopup';
 import socketService from '../../services/socketService';
 
 const Navbar = () => {
-  // State management
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
   
   // Hooks
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading, setUser } = useUser();
-  const { unreadCount } = useMessage();
+  const { unreadCount, isMessagePopupOpen, setIsMessagePopupOpen } = useMessage();
 
   // Screen size detection
   useEffect(() => {
