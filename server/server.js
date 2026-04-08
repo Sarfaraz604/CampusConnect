@@ -28,13 +28,15 @@ const requiredEnvVars = [
 ];
 
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
-if (!getFrontendOrigin()) {
-  missingEnvVars.push('FRONTEND_URL or VITE_API_BASE_URL');
-}
 
 if (missingEnvVars.length > 0) {
   console.error('Missing required environment variables:', missingEnvVars);
   process.exit(1);
+}
+
+if (!process.env.FRONTEND_URL) {
+  console.warn('[WARN] FRONTEND_URL is not set. CORS will only allow localhost origins.');
+  console.warn('[WARN] Set FRONTEND_URL=https://campus-connect-53ua.vercel.app on Render for production.');
 }
 
 // Connect to MongoDB

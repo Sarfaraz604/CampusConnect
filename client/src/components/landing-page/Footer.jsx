@@ -7,7 +7,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-white text-lg font-semibold mb-4">IIIT Agartala</h3>
-          <p className="text-gray-300">Student Networking Platform</p>
+          <p className="text-gray-300">Official Alumni Networking Platform</p>
           <p className="text-gray-300">Website: www.iiitagartala.ac.in</p>
         </div>
         <div>
@@ -31,7 +31,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="mt-8 border-t border-gray-700 pt-8">
-        <p className="text-center text-gray-400">&copy; 2024 AlumConnect for IIIT Agartala. All rights reserved.</p>
+        <p className="text-center text-gray-400">&copy; 2026 CampusConnect for IIIT Agartala. All rights reserved.</p>
       </div>
     </div>
     {/* Global styles to override default link styling */}

@@ -7,7 +7,7 @@ const aboutSections = [
   {
     title: "About IIIT Agartala",
     paragraphs: [
-      "AlumConnect is the alumni networking platform for IIIT Agartala, designed to keep alumni, students, faculty, and institute leadership connected in one secure digital space.",
+      "CampusConnect is the alumni networking platform for IIIT Agartala, designed to keep alumni, students, faculty, and institute leadership connected in one secure digital space.",
       "It brings together announcements, mentorship, career opportunities, fundraising, and discussion so the IIIT Agartala community can stay active long after graduation.",
     ],
   },
@@ -151,7 +151,7 @@ const Navbar = () => {
               className="object-contain"
             />
             <div className="ml-3 hidden leading-tight lg:block">
-              <h1 className="text-xl font-bold text-blue-700">CampusConnect</h1>
+              <h1 className="text-xl font-bold text-blue-700">AlumConnect</h1>
               <p className="text-xs text-gray-500">IIIT Agartala</p>
             </div>
           </Link>
@@ -247,7 +247,7 @@ const Navbar = () => {
                     className={`block w-full rounded-lg px-4 py-3 text-center transition-colors ${button.label === 'Sign In'
                       ? 'border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
+                      }`}
                   >
                     {button.label}
                   </Link>
