@@ -45,26 +45,38 @@ connectDB();
 const app = express();
 app.set('trust proxy', 1);
 
-// Security Middleware
-app.use(helmet());
-app.use(compression());
-
+// CORS — must come BEFORE helmet and everything else
 const corsOptions = {
-  origin: corsOriginHandler,
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000',
+    'https://campus-connect-53ua.vercel.app',
+    'https://campusconnect-2-c1s6.onrender.com',
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'Cookie', 
+    'Content-Type',
+    'Authorization',
+    'Cookie',
     'X-Requested-With',
     'Pragma',
-    'Cache-Control' 
+    'Cache-Control'
   ],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
+
+// Security Middleware — configured to not interfere with CORS
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(compression());
 
 // Body parser middleware
 app.use(express.json({ limit: '10kb' }));
