@@ -1,6 +1,6 @@
 # CampusConnect
 
-CampusConnect (AlumConnect) is an alumni networking platform for IIIT Agartala that supports announcements, networking, discussion, donations, profiles, and real-time messaging.
+CampusConnect is a student networking platform for IIIT Agartala that supports announcements, networking, discussion, donations, profiles, and real-time messaging.
 
 ## Repository Structure
 
