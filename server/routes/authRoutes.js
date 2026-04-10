@@ -8,6 +8,7 @@ const {
   buildSignupUserPayload,
   normalizeText,
 } = require("../utils/signupUtils");
+const { ensureVisitorAccount } = require("../utils/visitorAccounts");
 
 const router = express.Router();
 
@@ -79,7 +80,21 @@ const clearPendingGoogleSignup = (req) => {
 
 const getRequestedRole = (role) => normalizeText(role).toLowerCase();
 
-router.post("/login", ensureInstitutionalEmail, (req, res, next) => {
+router.post("/login", ensureInstitutionalEmail, async (req, res, next) => {
+  try {
+    const requestedRole = getRequestedRole(req.body.role);
+
+    if (requestedRole === "visitor") {
+      await ensureVisitorAccount({
+        email: req.body.email,
+        password: req.body.password,
+      });
+    }
+  } catch (error) {
+    next(error);
+    return;
+  }
+
   passport.authenticate("local", async (error, user, info) => {
     if (error) {
       next(error);
